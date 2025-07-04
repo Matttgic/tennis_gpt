@@ -6,6 +6,7 @@ import joblib
 st.title("🎾 Tennis GPT — Value Bet Finder")
 st.write("Prédictions ML sur historique ATP/WTA")
 
+# Sélection du circuit
 tour = st.radio("Circuit", ["ATP", "WTA"])
 model_path = f"models/tennis_model_{tour.lower()}.pkl"
 model = joblib.load(model_path)
@@ -24,7 +25,7 @@ all_features = [
     "level_A", "level_F", "level_G", "level_M"
 ]
 
-# Construction manuelle avec remplissage des colonnes manquantes
+# Construction manuelle avec initialisation à 0
 features = {
     "rank_diff": rank2 - rank1,
     "surface_Clay": 0,
@@ -38,7 +39,8 @@ features = {
 features[f"surface_{surface}"] = 1
 features[f"level_{level}"] = 1
 
-X = pd.DataFrame([features])[all_features]  # On s’assure que l’ordre est bon
+# Création du DataFrame dans l’ordre attendu
+X = pd.DataFrame([features])[all_features]
 
 proba = model.predict_proba(X)[0][1]
 implied = 1 / cote
