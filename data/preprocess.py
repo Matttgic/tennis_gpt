@@ -1,9 +1,9 @@
-# data/preprocess.py
 import pandas as pd
 import glob
 
-def load_atp_data(path="data/"):
-    files = glob.glob(path + "atp_matches_*.csv")
+def load_data(tour="ATP", path="data/"):
+    suffix = "atp" if tour.upper() == "ATP" else "wta"
+    files = glob.glob(f"{path}/{suffix}_matches_*.csv")
     df = pd.concat([pd.read_csv(f) for f in files])
     df = df[["winner_rank", "loser_rank", "surface", "tourney_level"]]
     df = df.dropna()
